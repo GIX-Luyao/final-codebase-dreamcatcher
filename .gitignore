@@ -1,0 +1,47 @@
+# ── Internal working notes (not for delivery) ─────────────────────────────────
+FIXES.md
+.claude/
+
+# ── macOS ─────────────────────────────────────────────────────────────────────
+.DS_Store
+
+# ── Node (all 4 sub-repos) ────────────────────────────────────────────────────
+**/node_modules/
+**/dist/
+
+# ── Environment variables ─────────────────────────────────────────────────────
+.env
+.env.*
+
+# ── Vite cache ────────────────────────────────────────────────────────────────
+**/.vite/
+
+# ── Python (dream-catcher-tui) ────────────────────────────────────────────────
+dream-catcher-tui/venv/
+dream-catcher-tui/bridge/__pycache__/
+dream-catcher-tui/tools/__pycache__/
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+
+# ── LaTeX intermediate files (docs/) ─────────────────────────────────────────
+# Tracked: *.tex  *.pdf  *.md  assets/
+docs/*.aux
+docs/*.log
+docs/*.out
+docs/*.toc
+docs/*.lof
+docs/*.lot
+docs/*.fls
+docs/*.fdb_latexmk
+docs/*.synctex.gz
+docs/*.synctex(busy)
+docs/*.bbl
+docs/*.blg
+docs/*.bcf
+docs/*.run.xml
+docs/*.nav
+docs/*.snm
+docs/*.vrb
+docs/*.dvi
+docs/*.xdv

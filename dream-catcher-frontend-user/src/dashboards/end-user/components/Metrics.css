@@ -1,0 +1,248 @@
+.metrics-section {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 50%, rgba(226, 0, 116, 0.85) 100%);
+  border-radius: 20px;
+  padding: var(--space-24);
+  border: 1px solid var(--color-border);
+  transition: box-shadow 0.2s ease;
+}
+
+.metrics-section:hover {
+  box-shadow: 0 4px 12px rgba(226, 0, 116, 0.15), 0 0 0 1px rgba(226, 0, 116, 0.1);
+}
+
+.metrics-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-16);
+}
+
+.metrics-section .section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.metrics-section .metrics-updated {
+  font-size: 11px;
+  font-weight: 400;
+  color: #ffffff !important;
+}
+
+.metrics-intro {
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: var(--line-height-relaxed);
+  margin: 0 0 var(--space-16) 0;
+  max-width: 100%;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-20);
+}
+
+.metric-card {
+  background: var(--color-bg-secondary);
+  border-radius: 20px;
+  padding: var(--space-16);
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-12);
+}
+
+.metric-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+}
+
+.metric-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.metric-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.metric-status-good {
+  background: #16a34a;
+}
+
+.metric-status-fair {
+  background: #ea580c;
+}
+
+.metric-status-poor {
+  background: #dc2626;
+}
+
+.metric-status-unknown,
+.metric-status-offline {
+  background: #6b7280;
+}
+
+.metric-value-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--space-8);
+}
+
+.metric-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1.2;
+  letter-spacing: 0;
+  transition: all 0.3s ease;
+}
+
+/* Smooth transition animation when metric values update */
+.metric-card-updating .metric-number {
+  transition: all 0.3s ease;
+}
+
+.metric-card-updating .metric-status {
+  transition: all 0.3s ease;
+}
+
+/* Fade effect animation for value changes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.metric-number-fade {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.metric-unit {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.metrics-criteria {
+  margin-top: var(--space-12);
+  padding: var(--space-8) var(--space-12);
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+}
+
+.metrics-criteria-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.metrics-criteria-toggle:hover .metrics-criteria-title,
+.metrics-criteria-toggle:hover .metrics-criteria-chevron {
+  color: rgba(255, 255, 255, 1);
+}
+
+.metrics-criteria-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.metrics-criteria-chevron {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  transition: transform 0.2s ease;
+}
+
+.metrics-criteria-table-wrap {
+  overflow-x: auto;
+  margin-top: var(--space-8);
+}
+
+.metrics-criteria-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.metrics-criteria-table th,
+.metrics-criteria-table td {
+  text-align: left;
+  padding: 2px 8px 2px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.metrics-criteria-table th {
+  font-weight: 600;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.metrics-criteria-table th:first-child,
+.metrics-criteria-table td:first-child {
+  padding-left: 0;
+}
+
+.metrics-criteria-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.metrics-criteria-table .th-good,
+.metrics-criteria-table .th-fair,
+.metrics-criteria-table .th-poor {
+  color: #fff;
+  font-weight: 700;
+}
+
+.metrics-criteria-table td {
+  font-weight: 400;
+}
+
+@media (max-width: 1024px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,116 @@
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: var(--space-28) var(--space-24);
+  box-shadow: none;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-28);
+  padding-bottom: var(--space-24);
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-logo-img {
+  max-width: 100%;
+  height: auto;
+  max-height: 28px;
+  object-fit: contain;
+  display: block;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  padding: var(--space-8) 0;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 0;
+  transition: all var(--transition-base);
+  font-size: var(--font-size-sm);
+  position: relative;
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.nav-item:hover {
+  color: var(--text-primary);
+}
+
+.nav-active {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.nav-dot {
+  width: var(--size-dot-sm);
+  height: var(--size-dot-sm);
+  background: var(--color-primary);
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: none;
+}
+
+.sidebar-motivation {
+  margin-top: auto;
+  padding-top: var(--space-24);
+}
+
+.motivation-box {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-16);
+  color: var(--text-primary);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-relaxed);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.motivation-box p {
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-16);
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    flex: 0;
+  }
+
+  .sidebar-motivation {
+    display: none;
+  }
+}

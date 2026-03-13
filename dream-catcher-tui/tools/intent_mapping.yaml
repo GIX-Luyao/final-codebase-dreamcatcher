@@ -1,0 +1,622 @@
+# Intent Mapping Configuration
+# Maps nDPI application names to intent categories
+#
+# Categories:
+#   1. Conversational Real-time - Human-to-human communication (video/voice calls)
+#   2. Interactive Workflows - Real-time collaboration, AI-assisted workflows
+#   3. Interactive Entertainment - Gaming, live streams, AR/VR
+#   4. Buffered Consumption - Media streaming, web browsing, social media
+#   5. Background - System services, updates, backups, IoT
+#
+# Default intent for unmapped applications
+default: Background
+
+# =============================================================================
+# CATEGORY 1: Conversational Real-time
+# Video calls, voice calls, real-time human communication
+# =============================================================================
+Conversational Real-time:
+  # Video/Voice Conferencing
+  - Zoom
+  - ZOOM
+  - TLS.Zoom
+  - RTP.Zoom
+  - MSTEAMS_CALL
+  - GOOGLE_MEET
+  - GOOGLE_CALL
+  - WEBEX
+  - ADOBE_CONNECT
+  - FUZE
+  - GOTO
+
+  # VoIP Protocols
+  - SIP
+  - H323
+  - OPAQUECAST
+  - OPAQUEPORT
+  - MGCP
+  - IAX
+  - SKINNY
+  #- RTP
+  - SRTP
+  - RTCP
+  - STUN
+  - BFCP
+
+  # Messaging App Calls
+  - WHATSAPP_CALL
+  - SIGNAL_VOIP
+  - TELEGRAM_VOIP
+  - VIBER_VOIP
+  - LINE_CALL
+  - FACEBOOK_VOIP
+  - SNAPCHAT_CALL
+  - KAKAOTALK_VOICE
+  - WECHAT
+  - DINGTALK
+  - PALTALK
+  - VIVOX
+
+  # Skype/Teams (nDPI naming variants)
+  - Skype_Teams
+  - Skype_TeamsCall
+
+  # Other Real-time Communication
+  - TRUPHONE
+  - MUMBLE
+  - TEAMSPEAK
+  - DISCORD  # Voice channels are real-time
+  - WEBRTC
+
+# =============================================================================
+# CATEGORY 2: Interactive Workflows
+# Real-time collaboration, AI-assisted workflows, cloud coding
+# =============================================================================
+Interactive Workflows:
+  # Team Collaboration
+  - SLACK
+  - MSTEAMS
+  - JABBER
+
+  # Code & Development
+  - GITHUB
+  - GITLAB
+  - GIT
+
+  # Cloud Documents & Storage (active use)
+  - GOOGLE_DOCS
+  - GOOGLE_DRIVE
+  - MS_ONE_DRIVE
+  - MICROSOFT_365
+  - DROPBOX
+
+  # Business & Productivity
+  - SALESFORCE
+  - SAP
+  - ORACLE
+  - MSSQL_TDS
+  - POSTGRES
+  - MYSQL
+  - MONGODB
+  - CASSANDRA
+  - ELASTICSEARCH
+  - REDIS
+  - MEMCACHED
+  - CLICKHOUSE
+
+  # Design & Creative Tools
+  - PLURALSIGHT
+
+  # Cloud Platforms (active development use)
+  - AMAZON_AWS
+  - MICROSOFT_AZURE
+  - GOOGLE_CLOUD
+  - ALICLOUD
+  - DIGITALOCEAN
+  - HUAWEI_CLOUD
+  - YANDEX_CLOUD
+  - AWS_API_GATEWAY
+  - AWS_KINESIS
+  - AWS_EC2
+  - AWS_EMR
+  - AWS_DYNAMODB
+  - AWS_COGNITO
+
+  # Remote Access (work)
+  - RDP
+  - VNC
+  - TEAMVIEWER
+  - ANYDESK
+  - NOMACHINE
+  - CITRIX
+  - RADMIN
+
+  # API & Data Exchange
+  - WEBSOCKET
+  - JSON_RPC
+  - SOAP
+  - APACHE_THRIFT
+  - PROTOBUF
+  - APACHE_KAFKA
+  - AMQP
+  - NATS
+  - ZMQ
+  - RESP
+  - STOMP
+  - GEARMAN
+  - GRPC
+
+# =============================================================================
+# CATEGORY 3: Interactive Entertainment
+# Gaming, live streams, AR/VR
+# =============================================================================
+Interactive Entertainment:
+  # PC Gaming Platforms
+  - STEAM
+  - VALVE_SDR
+  - SOURCE_ENGINE
+  - EPICGAMES
+  - BLIZZARD
+  - BATTLENET
+
+  # Specific Games
+  - WORLDOFWARCRAFT
+  - HOTS
+  - DOTA2
+  - GENSHIN_IMPACT
+  - ROBLOX
+  - AMONG_US
+  - FORTNITE
+  - CROSSFIRE
+  - DOFUS
+  - GUILDWARS2
+  - ARMAGETRON
+  - COD_MOBILE
+  - LOLWILDRIFT
+  - TESO
+  - PATHOFEXILE
+
+  # Game Publishers/Networks
+  - RIOTGAMES
+  - NEXON
+  - ACTIVISION
+  - ELECTRONICARTS
+  - NINTENDO
+  - ROCKSTAR_GAMES
+  - GAIJIN
+  - NETEASE_GAMES
+  - TENCENTGAMES
+
+  # Console Gaming
+  - XBOX
+  - PLAYSTATION
+
+  # Cloud Gaming
+  - GEFORCENOW
+  - NVIDIA
+  - BLACKNUT
+  - BOOSTEROID
+
+  # Game Boosters/Accelerators
+  - LAGOFAST
+  - GEARUP_BOOSTER
+  - MUDFISH
+
+  # Live Streaming Platforms
+  - TWITCH
+  - KICK
+  - LIVESTREAM
+
+  # Gaming Protocols
+  - RAKNET
+  - KCP
+
+# =============================================================================
+# CATEGORY 4: Buffered Consumption
+# Media streaming, web browsing, social media
+# =============================================================================
+Buffered Consumption:
+  # Video Streaming
+  - YOUTUBE
+  - NETFLIX
+  - AMAZON_VIDEO
+  - DISNEYPLUS
+  - HULU
+  - HBO
+  - APPLETVPLUS
+  - VUDU
+  - SHOWTIME
+  - PARAMOUNTPLUS
+  - DAZN
+  - VIMEO
+  - DAILYMOTION
+  - IQIYI
+  - TENCENTVIDEO
+  - ZATTOO
+  - IFLIX
+  - RUTUBE
+  - RUMBLE
+  - DIRECTV
+  - ESPN
+
+  # Music Streaming
+  - SPOTIFY
+  - DEEZER
+  - PANDORA
+  - SOUNDCLOUD
+  - LASTFM
+  - TIDAL
+  - IHEARTRADIO
+  - TUNEIN
+  - SIRIUSXMRADIO
+  - YANDEX_MUSIC
+  - ICECAST
+
+  # Social Media
+  - FACEBOOK
+  - INSTAGRAM
+  - TWITTER
+  - TIKTOK
+  - SNAPCHAT
+  - LINKEDIN
+  - PINTEREST
+  - REDDIT
+  - TUMBLR
+  - VK
+  - SINA
+  - SINA_WEIBO
+  - LIKEE
+  - FACEBOOK_REEL_STORY
+  - BLUESKY
+  - MASTODON
+  - THREADS
+  - NAVER
+
+  # Messaging (non-call)
+  - WHATSAPP
+  - WHATSAPP_FILES
+  - TELEGRAM
+  - SIGNAL
+  - VIBER
+  - LINE
+  - FACEBOOK_MESSENGER
+  - KAKAOTALK
+  - IMO
+  - THREEMA
+  - QQ
+  - OICQ
+
+  # Web Browsing
+  - HTTP
+  - HTTPS
+  - TLS
+  - DTLS
+  - HTTP2
+  - HTTP_CONNECT
+  - HTTP_PROXY
+  - QUIC
+
+  # Search & Portals
+  - GOOGLE
+  - GOOGLE_SERVICES
+  - YAHOO
+  - YANDEX
+  - MOZILLA
+  - WIKIPEDIA
+  - BING
+
+  # Shopping
+  - AMAZON
+  - EBAY
+  - ALIBABA
+  - TAOBAO
+  - SHEIN
+  - TEMU
+
+  # News & Media
+  - CNN
+  - BLOOMBERG
+
+  # Maps & Navigation
+  - GOOGLE_MAPS
+  - WAZE
+
+  # Email (reading)
+  - GMAIL
+  - MS_OUTLOOK
+  - YANDEX_MAIL
+
+  # Other Content
+  - APPLE_ITUNES
+  - APPLESTORE
+  - PLAYSTORE
+  - PASTEBIN
+  - GOOGLE_CLASSROOM
+  - ACCUWEATHER
+  - BADOO
+
+# =============================================================================
+# CATEGORY 5: Background
+# System services, updates, backups, IoT, infrastructure
+# =============================================================================
+Background:
+  # DNS & Name Resolution
+  - DNS
+  - MDNS
+  - LLMNR
+  - DOH_DOT
+  - DNSCRYPT
+  - OPENDNS
+  - AVAST_SECUREDNS
+
+  # System Time & Sync
+  - NTP
+  - ROUGHTIME
+  - PTPV2
+
+  # DHCP & Network Config
+  - DHCP
+  - DHCPV6
+  - RADIUS
+  - KERBEROS
+  - LDAP
+
+  # System Updates
+  - WINDOWS_UPDATE
+  - APPLE
+  - APPLE_PUSH
+  - APPLE_ICLOUD
+  - MICROSOFT
+  - CRASHLYSTICS
+
+  # Network Infrastructure
+  - SNMP
+  - NETFLOW
+  - SFLOW
+  - SYSLOG
+  - COLLECTD
+  - MUNIN
+  - ZABBIX
+  - CHECKMK
+  - NAGIOS
+
+  # Routing Protocols
+  - BGP
+  - OSPF
+  - IP_OSPF
+  - IP_VRRP
+  - HSRP
+  - GLBP
+  - LDP
+  - BFD
+  - LISP
+
+  # File Transfer (background sync)
+  - FTP_CONTROL
+  - FTP_DATA
+  - FTPS
+  - SFTP
+  - TFTP
+  - RSYNC
+  - SYNCTHING
+  - NFS
+  - AFP
+  - SMBV1
+  - SMBV23
+  - WEBDAV
+  - UFTP
+
+  # Email Protocols (background sync)
+  - MAIL_POP
+  - MAIL_SMTP
+  - MAIL_IMAP
+  - MAIL_POPS
+  - MAIL_SMTPS
+  - MAIL_IMAPS
+  - SMPP
+
+  # VPN & Tunneling
+  - OPENVPN
+  - WIREGUARD
+  - IPSEC
+  - IP_AH
+  - IP_ESP
+  - PPTP
+  - CISCOVPN
+  - SOFTETHER
+  - TINC
+  - TEREDO
+  - VXLAN
+  - IP_GRE
+  - IP_IP_IN_IP
+  - GTP
+  - GTP_U
+  - GTP_C
+  - GTP_PRIME
+  - PFCP
+  - CAPWAP
+
+  # Privacy/Proxy VPNs
+  - TOR
+  - HOTSPOT_SHIELD
+  - PSIPHON
+  - ULTRASURF
+  - TUNNELBEAR
+  - CLOUDFLARE_WARP
+  - PROTONVPN
+  - OPERA_VPN
+  - PIA
+  - NORDVPN
+  - SURFSHARK
+  - CACTUSVPN
+  - WINDSCRIBE
+  - MULLVAD
+  - ICLOUD_PRIVATE_RELAY
+  - TAILSCALE
+  - HAMACHI
+
+  # IoT & Smart Home
+  - MQTT
+  - COAP
+  - TUYA_LP
+  - TPLINK_SHP
+  - AMAZON_ALEXA
+  - APPLE_SIRI
+  - YANDEX_ALICE
+  - NEST_LOG_SINK
+  - XIAOMI
+  - SONOS
+  - MATTER
+  - KNXNET_IP
+
+  # Industrial Protocols
+  - MODBUS
+  - BACNET
+  - DNP3
+  - IEC60870
+  - S7COMM
+  - S7COMM_PLUS
+  - PROFINET_IO
+  - ETHERNET_IP
+  - CIP
+  - FINS
+  - HART_IP
+  - OPC_UA
+  - MELSEC
+  - UMAS
+  - BECKHOFF_ADS
+  - ISO9506_1_MMS
+  - IEEE_C37118
+  - ETHERSIO
+  - ETHERSBUS
+  - IEC62056
+  - TRISTATION
+  - DLEP
+  - C1222
+
+  # Cloud Infrastructure
+  - AWS_S3
+  - AWS_CLOUDFRONT
+  - CLOUDFLARE
+  - AKAMAI
+  - EDGECAST
+  - CACHEFLY
+  - FLUTE
+
+  # Network Services
+  - NETBIOS
+  - SSDP
+  - WSD
+  - IPP
+  - BJNP
+  - NATPMP
+  - UBNTAC2
+  - UBIQUITY
+  - MIKROTIK
+  - MERAKI_CLOUD
+
+  # Low-level Protocols
+  - IP_ICMP
+  - IP_ICMPV6
+  - IP_IGMP
+  - IP_EGP
+  - IP_SCTP
+  - IP_PGM
+  - IP_PIM
+  - ARP
+
+  # Cryptocurrency (mining/sync)
+  - BITCOIN
+  - ETHEREUM
+  - MONERO
+  - MINING
+  - NANO
+
+  # Backup & Sync Services
+  - YANDEX_DISK
+  - CEPH
+  - LUSTRE
+
+  # Telemetry & Analytics
+  - YANDEX_METRIKA
+  - YANDEX_DIRECT
+  - YANDEX_MARKET
+  - GOOGLE_ANALYTICS
+  - OCSP
+
+  # Security
+  - SSH
+  - TELNET
+  - RSH
+  - WHOIS_DAS
+  - CYBERSECURITY
+  - AVAST
+  - CANONICAL
+
+  # Database Replication
+  - DRDA
+  - DCERPC
+  - CORBA
+  - JRMI
+
+  # Misc Infrastructure
+  - SOCKS
+  - HAPROXY
+  - AJP
+  - FASTCGI
+  - DIAMETER
+  - MEGACO
+  - RTSP
+  - RTMP
+  - MPEGTS
+  - MPEGDASH
+  - HLS
+  - IRC
+  - USENET
+  - BITTORRENT
+  - GNUTELLA
+  - EDONKEY
+  - VMWARE
+  - SOMEIP
+  - FIX
+  - HL7
+  - DICOM
+  - Z3950
+  - OPENFLOW
+  - RMCP
+  - CAN
+  - HISLIP
+  - RAFT
+  - OPENWIRE
+  - CNP_IP
+  - ATG
+  - TRDP
+  - RIPE_ATLAS
+  - EAQ
+  - OOKLA
+  - SD_RTN
+  - NTOP
+  - SAMSUNG_SDP
+  - TESLA_SERVICES
+  - MSDO
+  - FORTICLIENT
+  - TARGUS_GETDATA
+  - HPVIRTGRP
+  - CRYNET
+  - I3D
+  - HUAWEI
+  - ZUG
+  - TIVOCONNECT
+  - KISMET
+  - EGD
+  - HCL_NOTES
+  - XDMCP
+  - NOE
+  - RX
+  - RTPS
+  - EASYWEATHER
+  - JSON
+  - MSGPACK
+
+  # Unknown/Unclassified
+  - UNKNOWN

@@ -1,0 +1,27 @@
+{
+  "name": "smart-router-backend",
+  "version": "1.0.0",
+  "description": "Backend API server for Smart Router Dashboard",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "keywords": [
+    "smart-router",
+    "5g",
+    "network-slicing",
+    "api"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "ping": "^0.4.4",
+    "speedtest-net": "^2.2.0",
+    "uuid": "^9.0.0",
+    "ws": "^8.14.2"
+  }
+}

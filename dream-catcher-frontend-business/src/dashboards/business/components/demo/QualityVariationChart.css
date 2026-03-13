@@ -1,0 +1,123 @@
+.quality-chart {
+  width: 100%;
+}
+
+.quality-chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  margin-bottom: var(--space-12);
+}
+
+.quality-chart-header-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  letter-spacing: var(--letter-spacing-tight);
+  margin: 0;
+}
+
+.quality-chart-container {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-12) var(--space-20) var(--space-4) var(--space-20);
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.quality-chart-legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-20);
+  flex-shrink: 0;
+}
+
+.quality-chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.quality-chart-legend-line {
+  width: 3px;
+  height: 14px;
+  flex-shrink: 0;
+  background-repeat: repeat-y;
+  background-size: 3px 5px;
+}
+
+.quality-chart-legend-line-before {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--color-text-muted) 0,
+    var(--color-text-muted) 3px,
+    transparent 3px,
+    transparent 5px
+  );
+}
+
+.quality-chart-legend-line-after {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--color-primary) 0,
+    var(--color-primary) 3px,
+    transparent 3px,
+    transparent 5px
+  );
+}
+
+.quality-chart-placeholder {
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* Recharts styling overrides */
+.quality-chart-container .recharts-cartesian-axis-tick-value {
+  fill: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+.quality-chart-container .recharts-label {
+  fill: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+.quality-chart-container .recharts-cartesian-grid-horizontal line {
+  stroke-opacity: 0.6;
+}
+
+.quality-chart-container .recharts-cartesian-grid-vertical line {
+  stroke-opacity: 0.4;
+}
+
+/* Custom tooltip styling */
+.quality-chart-tooltip {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-8) var(--space-12);
+  box-shadow: var(--shadow-md);
+}
+
+.quality-chart-tooltip-label {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-4);
+}
+
+.quality-chart-tooltip-item {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+}
