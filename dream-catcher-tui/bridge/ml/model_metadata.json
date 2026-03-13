@@ -1,0 +1,17 @@
+{
+  "model_type": "rf",
+  "n_features": 62,
+  "n_training_samples": 6970,
+  "classes_multiclass": [
+    "Background",
+    "Buffered Consumption",
+    "Conversational Real-time",
+    "Interactive Entertainment",
+    "Interactive Workflows"
+  ],
+  "classes_binary": [
+    "Conversational",
+    "Other"
+  ],
+  "cv_folds": 5
+}

@@ -1,0 +1,1165 @@
+% !TEX program = lualatex
+\documentclass[11pt, a4paper]{article}
+
+% ── Engine & fonts ────────────────────────────────────────────────────────────
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont[Scale=0.88]{Latin Modern Mono}
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Page geometry ─────────────────────────────────────────────────────────────
+\usepackage[
+  a4paper,
+  top=2.5cm, bottom=2.7cm,
+  left=2.5cm, right=2.5cm,
+  headheight=16pt
+]{geometry}
+
+% ── Colors ────────────────────────────────────────────────────────────────────
+\usepackage{xcolor}
+\definecolor{tmmagenta}{HTML}{E20074}
+\definecolor{tmdark}{HTML}{1A1A1A}
+\definecolor{tmgray}{HTML}{555555}
+\definecolor{codebg}{HTML}{1E1E1E}
+\definecolor{codetext}{HTML}{D4D4D4}
+\definecolor{codenumber}{HTML}{858585}
+\definecolor{codekeyword}{HTML}{569CD6}
+\definecolor{codestring}{HTML}{CE9178}
+\definecolor{codecomment}{HTML}{6A9955}
+\definecolor{lightgray}{HTML}{F5F5F5}
+\definecolor{tablegray}{HTML}{F0F0F0}
+\definecolor{tableborder}{HTML}{CCCCCC}
+\definecolor{noteblue}{HTML}{EBF5FB}
+\definecolor{noteblueborder}{HTML}{2980B9}
+\definecolor{warnamber}{HTML}{FEFCE7}
+\definecolor{warnborder}{HTML}{D68910}
+\definecolor{dangerbg}{HTML}{FDEDEC}
+\definecolor{dangerborder}{HTML}{C0392B}
+
+% ── Graphics & layout ─────────────────────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{eso-pic}
+\usepackage{calc}
+
+% ── Tables ────────────────────────────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+
+% ── Code listings ─────────────────────────────────────────────────────────────
+\usepackage{listings}
+\usepackage[most, listings, breakable, skins]{tcolorbox}
+
+% Language definitions not built into listings
+\lstdefinelanguage{json}{
+  morestring=[b]",
+  morecomment=[l]{//},
+  literate=
+    *{0}{{{\color{codekeyword}0}}}{1}
+     {1}{{{\color{codekeyword}1}}}{1}
+     {2}{{{\color{codekeyword}2}}}{1}
+     {3}{{{\color{codekeyword}3}}}{1}
+     {4}{{{\color{codekeyword}4}}}{1}
+     {5}{{{\color{codekeyword}5}}}{1}
+     {6}{{{\color{codekeyword}6}}}{1}
+     {7}{{{\color{codekeyword}7}}}{1}
+     {8}{{{\color{codekeyword}8}}}{1}
+     {9}{{{\color{codekeyword}9}}}{1}
+     {:}{{{\color{codetext}{:}}}}{1}
+     {,}{{{\color{codetext}{,}}}}{1},
+}
+
+\lstdefinelanguage{javascript}{
+  keywords={const, let, var, function, return, if, else, for, while,
+            true, false, null, undefined, class, import, export, default,
+            new, this, typeof, instanceof},
+  sensitive=true,
+  morestring=[b]",
+  morestring=[b]',
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+}
+
+\lstdefinestyle{dreamcode}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small\color{codetext},
+  keywordstyle=\color{codekeyword}\bfseries,
+  stringstyle=\color{codestring},
+  commentstyle=\color{codecomment}\itshape,
+  numberstyle=\tiny\color{codenumber},
+  breakatwhitespace=false,
+  breaklines=true,
+  keepspaces=true,
+  showspaces=false,
+  showstringspaces=false,
+  tabsize=2,
+  frame=none,
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  aboveskip=0pt,
+  belowskip=0pt,
+}
+
+\lstdefinestyle{dreamverbatim}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\footnotesize\color{codetext},
+  breaklines=false,
+  frame=none,
+  xleftmargin=0.5em,
+  aboveskip=0pt,
+  belowskip=0pt,
+}
+
+% Code block environment (with language argument, default=bash)
+\newtcblisting{codebox}[1][bash]{%
+  listing only,
+  colback=codebg,
+  colframe=codebg,
+  arc=5pt, boxrule=0pt,
+  left=8pt, right=8pt, top=7pt, bottom=7pt,
+  breakable,
+  listing options={style=dreamcode, language=#1}%
+}
+
+% Verbatim block for ASCII diagrams
+\newtcblisting{verbbox}{%
+  listing only,
+  colback=codebg,
+  colframe=codebg,
+  arc=5pt, boxrule=0pt,
+  left=8pt, right=8pt, top=7pt, bottom=7pt,
+  breakable,
+  listing options={style=dreamverbatim}%
+}
+
+% ── Callout boxes ─────────────────────────────────────────────────────────────
+\newenvironment{notebox}{%
+  \begin{tcolorbox}[
+    colback=noteblue, colframe=noteblueborder,
+    arc=4pt, boxrule=1.5pt,
+    left=10pt, right=10pt, top=7pt, bottom=7pt,
+    fontupper=\small, breakable
+  ]\textbf{\color{noteblueborder}Note:}\enspace
+}{%
+  \end{tcolorbox}\vspace{0.3em}
+}
+
+\newenvironment{warnbox}{%
+  \begin{tcolorbox}[
+    colback=warnamber, colframe=warnborder,
+    arc=4pt, boxrule=1.5pt,
+    left=10pt, right=10pt, top=7pt, bottom=7pt,
+    fontupper=\small, breakable
+  ]\textbf{\color{warnborder}Warning:}\enspace
+}{%
+  \end{tcolorbox}\vspace{0.3em}
+}
+
+\newenvironment{dangerbox}{%
+  \begin{tcolorbox}[
+    colback=dangerbg, colframe=dangerborder,
+    arc=4pt, boxrule=1.5pt,
+    left=10pt, right=10pt, top=7pt, bottom=7pt,
+    fontupper=\small, breakable
+  ]\textbf{\color{dangerborder}Important:}\enspace
+}{%
+  \end{tcolorbox}\vspace{0.3em}
+}
+
+% ── Screenshot image command ──────────────────────────────────────────────────
+\newcommand{\screenshot}[1]{%
+  \begin{center}
+    \vspace{0.4em}
+    \includegraphics[width=0.95\linewidth, keepaspectratio]{assets/#1}%
+    \vspace{0.4em}
+  \end{center}
+}
+
+% ── Typography ────────────────────────────────────────────────────────────────
+\usepackage{microtype}
+\usepackage{parskip}
+\usepackage{enumitem}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist[itemize]{itemsep=0.15em, topsep=0.2em, leftmargin=1.6em}
+\setlist[enumerate]{itemsep=0.15em, topsep=0.2em, leftmargin=1.6em}
+
+% ── Section formatting ────────────────────────────────────────────────────────
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\Large\bfseries\color{tmdark}}
+  {\colorbox{tmmagenta}{\color{white}\,\thesection\,}}{0.7em}{}
+  [\vspace{0.1em}\textcolor{tmmagenta}{\rule{\linewidth}{1pt}}\vspace{0.1em}]
+
+\titleformat{\subsection}
+  {\large\bfseries\color{tmdark}}
+  {\textcolor{tmmagenta}{\thesubsection}}{0.6em}{}
+
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{tmdark}}
+  {\textcolor{tmmagenta}{\thesubsubsection}}{0.5em}{}
+
+\titlespacing{\section}{0pt}{1.8em}{0.9em}
+\titlespacing{\subsection}{0pt}{1.2em}{0.5em}
+\titlespacing{\subsubsection}{0pt}{0.9em}{0.3em}
+
+% ── Table of contents ─────────────────────────────────────────────────────────
+\usepackage{titletoc}
+\contentsmargin{0pt}
+
+\titlecontents{section}[0em]
+  {\vspace{0.4em}\bfseries}
+  {\textcolor{tmmagenta}{\thecontentslabel}\hspace{0.7em}}
+  {}
+  {\hfill\textcolor{tmmagenta}{\thecontentspage}}
+
+\titlecontents{subsection}[1.8em]
+  {\small}
+  {\thecontentslabel\hspace{0.5em}}
+  {}
+  {\titlerule*[0.5em]{.}\thecontentspage}
+
+% ── Headers & footers ─────────────────────────────────────────────────────────
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{tmgray}\itshape\leftmark}
+\fancyhead[R]{\small\textcolor{tmmagenta}{\textbf{Dream Catcher}}\enspace\color{tmgray}User Manual}
+\fancyfoot[C]{\small\color{tmgray}\thepage\ /\ \pageref{LastPage}}
+\fancyfoot[R]{\small\color{tmgray}v1.0.0 · March 2026}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Colored rules
+\newcommand{\headrulecolor}[1]{%
+  \renewcommand{\headrule}{%
+    {\color{#1}\hrule height\headrulewidth\hfill}%
+  }%
+}
+
+% Manual colored separator lines
+\usepackage{afterpage}
+\fancyhead[C]{}
+
+% ── Table helpers ─────────────────────────────────────────────────────────────
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcommand{\ra}{\rowcolor{tablegray}}
+
+% Inline code
+\newcommand{\code}[1]{%
+  \texttt{\small\colorbox{lightgray}{\strut\,#1\,}}%
+}
+
+% ── Hyperref (load last) ──────────────────────────────────────────────────────
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks  = true,
+  linkcolor   = tmmagenta,
+  urlcolor    = tmmagenta,
+  citecolor   = tmmagenta,
+  pdftitle    = {Dream Catcher — User Manual},
+  pdfauthor   = {Wayne Tsai, Marjorie Yang, Yourong Xu},
+  pdfsubject  = {Intent-Based 5G Network Slice Controller},
+  pdfkeywords = {5G, network slicing, pfSense, WAN switching},
+  bookmarksnumbered = true,
+  bookmarksopen     = true,
+}
+
+% =============================================================================
+\begin{document}
+% =============================================================================
+
+% ── Cover Page ────────────────────────────────────────────────────────────────
+\begin{titlepage}
+\thispagestyle{empty}
+
+% Top magenta band
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[tmmagenta]
+    (current page.north west) rectangle
+    ([yshift=-5.5cm] current page.north east);
+
+  \node[
+    anchor=west,
+    text=white,
+    font=\fontsize{32}{36}\selectfont\bfseries,
+    inner sep=0pt
+  ] at ([xshift=2.5cm, yshift=-1.8cm] current page.north west)
+    {DREAM CATCHER};
+
+  \node[
+    anchor=west,
+    text=white!80!tmmagenta,
+    font=\large,
+    inner sep=0pt
+  ] at ([xshift=2.5cm, yshift=-3.0cm] current page.north west)
+    {Intent-Based 5G Network Slice Controller};
+
+  \node[
+    anchor=west,
+    text=white,
+    font=\normalsize,
+    inner sep=0pt
+  ] at ([xshift=2.5cm, yshift=-4.1cm] current page.north west)
+    {User Manual};
+
+  % Version badge
+  \node[
+    anchor=east,
+    fill=white, text=tmmagenta,
+    font=\small\bfseries,
+    inner sep=5pt, rounded corners=3pt
+  ] at ([xshift=-2.5cm, yshift=-2.6cm] current page.north east)
+    {VERSION 1.0.0};
+\end{tikzpicture}
+
+\vspace{6cm}
+
+% Logo
+\begin{center}
+  \includegraphics[height=4.5cm, keepaspectratio]{assets/logo.png}
+\end{center}
+
+\vspace{1.2cm}
+
+% Info table
+\begin{center}
+  \begin{tcolorbox}[
+    width=14cm,
+    colback=white, colframe=tmmagenta,
+    boxrule=1.5pt, arc=6pt,
+    left=14pt, right=14pt, top=10pt, bottom=10pt
+  ]
+    \renewcommand{\arraystretch}{1.35}
+    \begin{tabular}{@{}L{4.5cm}L{8.5cm}@{}}
+      \textbf{Project Title}      & Dream Catcher \\
+      \midrule
+      \textbf{Version}            & 1.0.0 \\
+      \textbf{Team Members}       & Wayne Tsai,\ \ Marjorie Yang,\ \ Yourong Xu \\
+      \textbf{Instructor}         & Luyao Niu,\ \ Mark Licata \\
+      \textbf{Industrial Sponsor} & T-Mobile \\
+      \textbf{Sponsor Contact}    & Justin Ho \\
+      \textbf{Submission Date}    & March 12, 2026 \\
+    \end{tabular}
+  \end{tcolorbox}
+\end{center}
+
+\vfill
+
+% Bottom dark bar
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[tmdark]
+    (current page.south west) rectangle
+    ([yshift=1.5cm] current page.south east);
+
+  \node[
+    anchor=west, text=white, font=\small, inner sep=0pt
+  ] at ([xshift=2.5cm, yshift=0.75cm] current page.south west)
+    {\copyright\ 2026 Dream Catcher Team\ —\ Sponsored by \textbf{T-Mobile}};
+
+  \node[
+    anchor=east, text=tmmagenta, font=\small\bfseries, inner sep=0pt
+  ] at ([xshift=-2.5cm, yshift=0.75cm] current page.south east)
+    {CONFIDENTIAL};
+\end{tikzpicture}
+
+\end{titlepage}
+
+% ── Table of Contents ─────────────────────────────────────────────────────────
+\newpage
+\thispagestyle{plain}
+
+{\hypersetup{linkcolor=tmdark}
+\tableofcontents}
+
+\newpage
+
+% =============================================================================
+\section{Product Overview}
+% =============================================================================
+
+\subsection{What Is Dream Catcher?}
+
+Dream Catcher is an intelligent network management system for 5G home and small-office routers. It watches the network traffic on your connection in real time, determines what kind of activity is happening — a video call, a gaming session, or regular browsing — and automatically switches the router to the best possible network configuration for that activity, without any manual input from the user.
+
+Think of it as a smart traffic controller living inside your router. When it detects that you have joined a Zoom meeting, it instantly prioritises the low-latency network path for that call. When the meeting ends, it quietly switches back to normal settings.
+
+\subsection{The Problem It Solves}
+
+Standard home routers treat all network traffic identically. A video call competes equally with a background file download or a software update. This causes dropped frames, choppy audio, and degraded call quality at the moments that matter most.
+
+Dream Catcher eliminates this problem by continuously monitoring traffic, identifying high-priority applications, and dynamically reassigning network resources — automatically and in real time.
+
+\subsection{Who Is It For?}
+
+\vspace{0.3em}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{L{4.2cm} L{10cm}}
+\toprule
+\rowcolor{tmmagenta!12}
+\textbf{Audience} & \textbf{Use Case} \\
+\midrule
+Home users
+  & Automatic quality improvement for video calls and gaming without any configuration \\
+\ra IT administrators
+  & Monitor and control network slice behaviour across a pfSense-managed network \\
+Business stakeholders
+  & Visualise the measurable quality-of-experience improvement driven by intelligent slice switching \\
+\ra Network engineers
+  & Extend or customise the intent classification and WAN switching logic \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Primary Features}
+
+\begin{itemize}
+  \item \textbf{Automatic traffic classification} — identifies applications (Zoom, Teams, FaceTime, YouTube, Steam, etc.) by their network behaviour using deep packet inspection
+  \item \textbf{Real-time WAN switching} — switches the active WAN gateway on a pfSense router the moment high-priority traffic is detected
+  \item \textbf{Terminal UI} — a fullscreen live view of all network flows, current slice state, and network metrics
+  \item \textbf{End-user dashboard} — a browser-based interface for home users to monitor router status and configure priority rules
+  \item \textbf{Business dashboard} — a stakeholder-facing view showing quality-of-experience charts with before/after switch markers and business impact metrics
+  \item \textbf{Demo mode} — a fully self-contained simulation requiring no router hardware, suitable for presentations and development
+\end{itemize}
+
+% =============================================================================
+\section{System Requirements}
+% =============================================================================
+
+\subsection{Supported Operating Systems}
+
+\vspace{0.3em}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{L{4.5cm} L{9.5cm}}
+\toprule
+\rowcolor{tmmagenta!12}
+\textbf{Component} & \textbf{Supported OS} \\
+\midrule
+Backend
+  & macOS 12+, Linux (Ubuntu 20.04+, Debian 11+) \\
+\ra Frontend dashboards
+  & Any OS with a modern browser (Chrome 110+, Firefox 110+, Safari 16+) \\
+TUI — demo mode
+  & macOS 12+, Linux \\
+\ra TUI — live mode
+  & Linux only (raw packet capture; macOS has NFStream limitations) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Hardware Requirements}
+
+\textbf{Minimum (demo mode / dashboards only):}
+\begin{itemize}
+  \item CPU: dual-core 2 GHz
+  \item RAM: 4 GB
+  \item Disk: 500 MB free
+\end{itemize}
+
+\textbf{Live mode (full system):}
+\begin{itemize}
+  \item CPU: quad-core 2 GHz recommended (NFStream is CPU-intensive during capture)
+  \item RAM: 8 GB
+  \item Network: a second network interface or SPAN/mirror port for packet capture
+  \item Router: pfSense 2.7+ with two configured WAN gateways and a gateway group
+\end{itemize}
+
+\subsection{Software Dependencies}
+
+\textbf{All components:}
+\begin{itemize}
+  \item Node.js 18 or later
+  \item npm 9 or later
+\end{itemize}
+
+\textbf{TUI live mode only:}
+\begin{itemize}
+  \item Python 3.12 or later
+  \item pip packages: \code{nfstream}, \code{pyyaml}, \code{requests}, \code{scapy}, \code{psutil}
+  \item Root/sudo privileges for raw packet capture
+\end{itemize}
+
+\textbf{pfSense router (live mode only):}
+\begin{itemize}
+  \item pfSense 2.7+
+  \item \href{https://github.com/jaredhendrickson13/pfsense-api}{pfSense-pkg-API} package installed
+  \item Two WAN gateways configured under \textbf{System → Routing → Gateways}
+  \item A gateway group configured under \textbf{System → Routing → Gateway Groups}
+  \item REST API enabled and an API key generated under \textbf{System → API → Keys}
+\end{itemize}
+
+\subsection{Internet Requirements}
+
+\begin{itemize}
+  \item \textbf{Demo mode:} no internet connection required
+  \item \textbf{Live mode metrics:} uses ICMP ping to public DNS servers (8.8.8.8, 1.1.1.1) — requires outbound internet access
+  \item \textbf{Active throughput measurement:} downloads from the Cloudflare speed test endpoint
+\end{itemize}
+
+\subsection{Network Ports Used}
+
+\vspace{0.3em}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{L{6.5cm} C{2.5cm} C{2.5cm}}
+\toprule
+\rowcolor{tmmagenta!12}
+\textbf{Service} & \textbf{Port} & \textbf{Protocol} \\
+\midrule
+Backend REST API     & 3002 & HTTP \\
+\ra Backend WebSocket     & 3002 & WS   \\
+Business / User frontend & 5173 & HTTP \\
+\ra User frontend local API & 3001 & HTTP \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% =============================================================================
+\section{Installation and Setup}
+% =============================================================================
+
+\subsection{Get the Code}
+
+\begin{codebox}[bash]
+git clone <repository-url>
+cd final-codebase-dreamcatcher
+\end{codebox}
+
+\subsection{Install Node.js}
+
+If Node.js is not already installed:
+
+\begin{itemize}
+  \item \textbf{macOS:} \code{brew install node} (requires \href{https://brew.sh}{Homebrew})
+  \item \textbf{Linux:} use \href{https://github.com/nvm-sh/nvm}{nvm} or your distribution's package manager
+\end{itemize}
+
+Verify the installation:
+
+\begin{codebox}[bash]
+node --version   # should print v18.x.x or higher
+npm --version
+\end{codebox}
+
+\subsection{Install Each Component}
+
+Each component is a standalone Node.js project installed independently:
+
+\begin{codebox}[bash]
+# Backend
+cd dream-catcher-backend && npm install
+
+# Business Dashboard
+cd dream-catcher-frontend-business && npm install
+
+# End-User Dashboard
+cd dream-catcher-frontend-user && npm install
+
+# TUI
+cd dream-catcher-tui && npm install
+\end{codebox}
+
+\subsection{Install Python Dependencies (Live Mode Only)}
+
+\begin{codebox}[bash]
+pip install nfstream pyyaml requests scapy psutil
+\end{codebox}
+
+\begin{notebox}
+On some systems you may need \code{pip3} instead of \code{pip}. NFStream and Scapy both require Python 3.12 or later.
+\end{notebox}
+
+\subsection{Configure pfSense Credentials (Live Mode Only)}
+
+Before running the TUI in live mode, set your pfSense connection details in\\
+\code{dream-catcher-tui/tools/wan\_toggle-v2.py}:
+
+\begin{codebox}[python]
+# --- Edit these values ---
+API_BASE_URL = "https://<your-pfsense-ip>/api/v2"
+API_KEY      = "YOUR_PFSENSE_API_KEY"
+
+GATEWAY_GROUP_NAME = "WAN_FAILOVER"   # must match your pfSense gateway group name
+WAN1_GATEWAY_NAME  = "WAN1_DHCP"      # must match your WAN1 gateway name
+WAN2_GATEWAY_NAME  = "WAN2_DHCP"      # must match your WAN2 gateway name
+\end{codebox}
+
+Gateway names can be found in pfSense under \textbf{System → Routing → Gateways}.
+
+\begin{dangerbox}
+Never commit your API key to source control. The placeholder \code{YOUR\_PFSENSE\_API\_KEY} must be replaced locally only and must never be pushed to any shared repository.
+\end{dangerbox}
+
+\subsection{pfSense API Package Setup}
+
+\begin{enumerate}
+  \item Log in to your pfSense web interface.
+  \item Navigate to \textbf{System → Package Manager → Available Packages}.
+  \item Search for \textbf{pfSense-pkg-API} and click \textbf{Install}.
+  \item After installation completes, go to \textbf{System → API → Keys}.
+  \item Click \textbf{Add} to generate a new API key. Copy the key — paste it into \code{wan\_toggle-v2.py} as shown above.
+  \item Confirm the API is enabled and that HTTPS access is permitted from the machine running the TUI.
+\end{enumerate}
+
+
+% =============================================================================
+\section{Operating Instructions}
+% =============================================================================
+
+\subsection{Choosing a Run Mode}
+
+Dream Catcher supports several operating configurations. Choose the one that best fits your goal:
+
+\vspace{0.3em}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{L{3.5cm} L{5cm} L{5.5cm}}
+\toprule
+\rowcolor{tmmagenta!12}
+\textbf{Mode} & \textbf{What Runs} & \textbf{Best For} \\
+\midrule
+A — Demo: TUI only
+  & TUI in demo mode
+  & Seeing the terminal UI without any hardware \\
+\ra B — Demo: Full stack
+  & TUI + Backend + Business Dashboard
+  & Full end-to-end presentation demo \\
+C — Mock: Backend + Dashboard
+  & Backend (mock) + Business Dashboard
+  & Frontend development, demo without TUI \\
+\ra D — End-user dashboard
+  & User frontend + its local server
+  & End-user monitoring view \\
+E — Live: Full system
+  & TUI (live) + Backend + Dashboards
+  & Production use with a real pfSense router \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Mode A — TUI Demo Only}
+
+The simplest way to see Dream Catcher in action. No backend or browser required.
+
+\textbf{Step 1.} Open a terminal and navigate to the TUI directory:
+
+\begin{codebox}[bash]
+cd dream-catcher-tui
+\end{codebox}
+
+\textbf{Step 2.} Start the demo:
+
+\begin{codebox}[bash]
+npm run dev -- --demo
+\end{codebox}
+
+\textbf{What you will see:} The terminal switches to fullscreen mode showing four panels:
+
+\begin{verbbox}
++-- Network Traffic ----------------------------++-- Slice Status ------+
+| (scrolling list of detected flows, color-     || Active: WAN1 (Normal)|
+|  coded by intent category)                    || Phase:  IDLE         |
+|                                               |+-- Network Metrics ---+
+|                                               || Latency   18.2ms     |
+|                                               || Jitter     2.1ms     |
+|                                               |+-- Slice Events ------+
+|                                               || (timestamped log)    |
++-----------------------------------------------+----------------------+
+\end{verbbox}
+
+The demo runs a 45-second cycle automatically. After roughly 10 seconds, a Zoom flow appears, the slice switches to WAN2 (low-latency), metrics improve, and all panels update in real time. Press \textbf{q} to quit.
+
+\screenshot{screenshots/tui-demo.png}
+
+\subsection{Mode B — Full Stack Demo (Recommended for Presentations)}
+
+Wires the TUI → Backend → Business Dashboard together for a complete end-to-end demo. Open three terminal windows.
+
+\textbf{Terminal 1 — Start the backend in TUI ingest mode:}
+
+\begin{codebox}[bash]
+cd dream-catcher-backend
+TELEMETRY_SOURCE=tui npm run dev
+\end{codebox}
+
+Wait until you see: \code{Server running on http://127.0.0.1:3002}
+
+\textbf{Terminal 2 — Start the TUI, forwarding events to the backend:}
+
+\begin{codebox}[bash]
+cd dream-catcher-tui
+BACKEND_INGEST_URL=http://127.0.0.1:3002/api/ingest/event npm run dev -- --demo
+\end{codebox}
+
+\textbf{Terminal 3 — Start the business dashboard:}
+
+\begin{codebox}[bash]
+cd dream-catcher-frontend-business
+npm run dev
+\end{codebox}
+
+Open your browser at \href{http://localhost:5173}{\code{http://localhost:5173}}.
+
+\textbf{What you will see:} The business dashboard loads and immediately begins receiving live telemetry driven by the TUI demo. As the cycle progresses, the quality-over-time chart updates in real time, switch markers annotate the chart at the exact moment the slice changes, and the metric cards refresh every second.
+
+\screenshot{screenshots/business-dashboard.png}
+
+\subsection{Mode C — Backend with Mock Data and Dashboard}
+
+No TUI needed. The backend runs its own built-in 41-second scripted scenario.
+
+\begin{codebox}[bash]
+# Terminal 1
+cd dream-catcher-backend && npm run dev
+
+# Terminal 2
+cd dream-catcher-frontend-business && npm run dev
+\end{codebox}
+
+Open \href{http://localhost:5173}{\code{http://localhost:5173}}. The dashboard behaves identically to Mode B.
+
+\subsection{Mode D — End-User Dashboard}
+
+\textbf{Step 1.} Start both the local API and frontend together:
+
+\begin{codebox}[bash]
+cd dream-catcher-frontend-user
+npm run dev:all
+\end{codebox}
+
+This starts the local Express API on port 3001 and the Vite frontend on port 5173.
+
+\textbf{Step 2.} Open \href{http://localhost:5173}{\code{http://localhost:5173}}.
+
+\textbf{What you will see:} A consumer-facing dashboard displaying router status, the detected activity, the active network slice, weekly performance statistics, and a live optimization log. You can toggle between Automatic and Custom priority modes, and switch between Work and Games optimization goals.
+
+\screenshot{screenshots/user-dashboard.png}
+
+\subsection{Mode E — Live Mode (Real Traffic)}
+
+\begin{warnbox}
+This mode requires a pfSense router, Python dependencies, and root privileges. Complete Sections~3.5 and 3.6 before proceeding.
+\end{warnbox}
+
+\textbf{Step 1.} Identify your network interface name:
+
+\begin{codebox}[bash]
+ip link show    # Linux
+ifconfig        # macOS
+\end{codebox}
+
+Common interface names: \code{eth0}, \code{ens19}, \code{en0}
+
+\textbf{Step 2.} Start the backend in TUI ingest mode:
+
+\begin{codebox}[bash]
+cd dream-catcher-backend
+TELEMETRY_SOURCE=tui npm run dev
+\end{codebox}
+
+\textbf{Step 3.} Start the TUI in live mode on your interface (root required):
+
+\begin{codebox}[bash]
+cd dream-catcher-tui
+BACKEND_INGEST_URL=http://127.0.0.1:3002/api/ingest/event sudo npm run dev -- -i ens19
+\end{codebox}
+
+\textbf{Step 4.} Start the business dashboard:
+
+\begin{codebox}[bash]
+cd dream-catcher-frontend-business && npm run dev
+# Open http://localhost:5173
+\end{codebox}
+
+The system is now monitoring real traffic. Start a Zoom or Teams call from any device on the network and watch the slice switch automatically in the terminal and dashboard.
+
+\subsection{Switching Dashboard Views}
+
+The business frontend codebase contains both the business and end-user dashboard layouts. To switch views, edit \code{src/App.jsx} in \code{dream-catcher-frontend-business}:
+
+\begin{codebox}[javascript]
+// Business stakeholder view (default)
+const dashboardType = 'business'
+
+// End-user router view
+const dashboardType = 'user'
+\end{codebox}
+
+Save the file — Vite will hot-reload the browser automatically.
+
+\subsection{Shutting Down}
+
+\begin{itemize}
+  \item \textbf{TUI:} press \textbf{q} in the terminal window
+  \item \textbf{Backend / Frontend servers:} press \textbf{Ctrl+C} in their respective terminal windows
+  \item In full-stack mode, shut down the backend before the TUI to avoid connection error messages
+\end{itemize}
+
+% =============================================================================
+\section{Technical Specifications}
+% =============================================================================
+
+\subsection{System Architecture}
+
+\begin{verbbox}
++--------------------------------------------------------------+
+|                          Clients                             |
+|   Browser (Business Dashboard)  Browser (User Dashboard)    |
++-----------------------------+--------------------------------+
+                              |  HTTP / WebSocket
+                              v
++-------------------------------------+
+|        dream-catcher-backend        |
+|   Express REST API   (port 3002)    |
+|   WebSocket Server  /ws/telemetry   |
++--------------+----------------------+
+               |  POST /api/ingest/event   (TUI mode)
+               v
++-------------------------------------+
+|         dream-catcher-tui           |
+|   Ink Terminal UI   (TypeScript)    |
+|                                     |
+|   useDemoEngine  --- demo mode      |
+|   usePythonBridge -- live mode      |
++---------------------+---------------+
+                      |  NDJSON (stdout)
+                      v
++-------------------------------------+
+|      bridge/ndjson_bridge.py        |
+|   NFStream  deep packet inspection  |
+|   Intent classification (nDPI)      |
+|   WAN switching via pfSense API     |
++-------------------------------------+
+\end{verbbox}
+
+\subsection{Technologies Used}
+
+\vspace{0.3em}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{L{5.5cm} L{4.5cm} C{2.5cm}}
+\toprule
+\rowcolor{tmmagenta!12}
+\textbf{Layer} & \textbf{Technology} & \textbf{Version} \\
+\midrule
+Backend HTTP server      & Express          & 4.x  \\
+\ra Backend WebSocket         & ws               & 8.x  \\
+Backend network metrics  & ping (ICMP)      & —    \\
+\ra Frontend framework        & React            & 18.x \\
+Frontend build tool      & Vite             & 4.x  \\
+\ra Frontend charts           & Recharts         & 3.x  \\
+Frontend animations      & Framer Motion    & 12.x \\
+\ra Terminal UI               & Ink              & 5.x  \\
+TUI language             & TypeScript       & 5.x  \\
+\ra TUI CLI parsing           & meow             & 13.x \\
+Python DPI               & NFStream / nDPI  & —    \\
+\ra Python networking         & scapy, psutil    & —    \\
+Python pfSense client    & requests         & —    \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Data Flow}
+
+\textbf{Mock / demo mode:}
+\begin{enumerate}
+  \item \code{telemetrySimulator.js} generates scripted telemetry on a fixed timeline
+  \item Backend REST routes and WebSocket serve this data to connected frontends
+  \item Frontend \code{useTelemetryStream} hook maintains a rolling time series and derives a quality score
+\end{enumerate}
+
+\textbf{TUI ingest mode:}
+\begin{enumerate}
+  \item TUI (demo or live) generates \code{BridgeEvent} objects
+  \item TUI POSTs each event to \code{POST /api/ingest/event}
+  \item Backend stores state in memory; REST routes and WebSocket serve the same state to all frontends
+  \item Frontends are data-source agnostic — they do not know whether data came from mock or TUI
+\end{enumerate}
+
+\subsection{WebSocket Message Format}
+
+Clients connect to \code{ws://localhost:3002/ws/telemetry}. The server pushes one \code{telemetry\_tick} message per second:
+
+\begin{codebox}[json]
+{
+  "type": "telemetry_tick",
+  "data": {
+    "state": {
+      "currentSlice": "video",
+      "decisionStatus": "stabilized"
+    },
+    "metrics": {
+      "latencyMs": 20,
+      "jitterMs": 2,
+      "throughputMbps": 55,
+      "packetLossPct": 0.05,
+      "qualityScore": 95
+    },
+    "event": "MEETING_DETECTED"
+  },
+  "timestamp": "2024-01-22T10:30:00.000Z"
+}
+\end{codebox}
+
+\subsection{Intent Classification Categories}
+
+The TUI classifies each detected network flow into one of five intent categories. WAN switching is triggered exclusively by \textbf{Conversational Real-time} traffic.
+
+\vspace{0.3em}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{L{5cm} C{2.2cm} L{6.8cm}}
+\toprule
+\rowcolor{tmmagenta!12}
+\textbf{Category} & \textbf{Colour} & \textbf{Examples} \\
+\midrule
+Conversational Real-time  & Red    & Zoom, FaceTime, Microsoft Teams \\
+\ra Interactive Workflows      & Yellow & Slack, GitHub \\
+Interactive Entertainment & Cyan   & Steam, Twitch \\
+\ra Buffered Consumption       & Blue   & YouTube, Netflix, Spotify \\
+Background                & Gray   & DNS, NTP, iCloud sync \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Demo Scenario Timeline}
+
+Both the backend built-in simulator and the TUI demo engine run the same scripted cycle:
+
+\vspace{0.3em}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{C{2.2cm} L{3cm} L{9cm}}
+\toprule
+\rowcolor{tmmagenta!12}
+\textbf{Time} & \textbf{Phase} & \textbf{What Happens} \\
+\midrule
+0–10s   & Idle       & Mixed background traffic, WAN1 active \\
+\ra 10s      & Detect     & Real-time traffic flow appears (Zoom) \\
+10–13s  & Switching  & WAN priority switches to WAN2 \\
+\ra 13s      & Stabilized & Low-latency slice active, quality improves \\
+13–30s  & Active     & Optimised operation, metrics held stable \\
+\ra 30–40s   & Cooldown   & Real-time traffic ends, cooldown timer runs \\
+40s     & Revert     & WAN priority reverts to WAN1 \\
+\ra 40–45s   & Idle       & Brief idle before cycle repeats \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% =============================================================================
+\section{Security and Privacy}
+% =============================================================================
+
+\subsection{API Key Security}
+
+The pfSense API key grants full administrative control of your router. Treat it as you would any privileged password.
+
+\begin{itemize}
+  \item \textbf{Do not commit it to source control.} The placeholder \code{YOUR\_PFSENSE\_API\_KEY} in \code{tools/wan\_toggle-v2.py} must be replaced locally and must never be pushed to any shared repository.
+  \item For any deployment beyond a single local machine, store credentials in environment variables or a dedicated secrets manager.
+  \item Rotate the key immediately if it is ever accidentally exposed.
+\end{itemize}
+
+\subsection{Network Access}
+
+\begin{itemize}
+  \item The backend server binds to \code{127.0.0.1} by default and is not reachable from other machines on the network unless you explicitly change the \code{HOST} environment variable.
+  \item The Vite development server also binds to localhost by default.
+\end{itemize}
+
+\begin{dangerbox}
+Do not expose any Dream Catcher service to the public internet without first adding an authentication layer. These services are designed for use on a trusted local network only.
+\end{dangerbox}
+
+\subsection{TLS and the pfSense Certificate}
+
+The Python bridge connects to pfSense over HTTPS. pfSense ships with a self-signed certificate by default, so the bridge disables TLS certificate verification (\code{verify=False}). This is acceptable on a private local network but leaves the connection vulnerable to machine-in-the-middle attacks on untrusted networks. For production deployments, install a valid certificate on pfSense and remove the \code{verify=False} flag from the bridge.
+
+\subsection{Packet Capture}
+
+Live mode captures all packets on the selected network interface, including unencrypted traffic from every device on the network. Only operate Dream Catcher in live mode on networks you own or have explicit written authorisation to monitor.
+
+\subsection{Data Privacy}
+
+\begin{itemize}
+  \item Dream Catcher does not transmit any captured traffic data outside your local machine.
+  \item No telemetry, usage analytics, or diagnostic data are sent to any external service.
+  \item All runtime data is held in memory only; nothing is written to disk and nothing persists across restarts.
+\end{itemize}
+
+\subsection{Known Operational Security Limitations}
+
+\begin{itemize}
+  \item The backend REST API and WebSocket server have no authentication layer. Any client that can reach port 3002 can read telemetry data and post ingest events.
+  \item The \code{PUT /api/router/config} endpoint accepts configuration changes but does not validate or apply them to a real router in mock mode.
+\end{itemize}
+
+% =============================================================================
+\section{Troubleshooting}
+% =============================================================================
+
+\subsection{The Backend Fails to Start}
+
+\textbf{Symptom:} \code{Error: listen EADDRINUSE :3002}
+
+\textbf{Cause:} Another process is already using port 3002.
+
+\textbf{Fix:} Find and terminate the conflicting process, or start the backend on a different port:
+
+\begin{codebox}[bash]
+lsof -i :3002        # identify the process (macOS / Linux)
+kill -9 <PID>        # stop it
+# -- or --
+PORT=3003 npm run dev
+\end{codebox}
+
+\subsection{The Frontend Shows No Data}
+
+\textbf{Symptom:} Dashboard loads but metrics never appear or stay at zero.
+
+\textbf{Cause:} The frontend cannot reach the backend.
+
+\textbf{Fix:}
+\begin{enumerate}
+  \item Confirm the backend is running: \code{curl http://localhost:3002/api/health}
+  \item Open browser developer tools and check the Console for WebSocket errors.
+  \item Ensure no local firewall is blocking port 3002.
+\end{enumerate}
+
+\subsection{The TUI Shows a Blank Screen or Crashes}
+
+\textbf{Symptom:} Terminal goes blank then exits, possibly with a React or Ink error.
+
+\textbf{Cause:} Terminal window is too small, or a dependency is missing.
+
+\textbf{Fix:}
+\begin{enumerate}
+  \item Resize the terminal window (minimum \textasciitilde100 columns × 30 rows recommended).
+  \item Re-run \code{npm install} to ensure all dependencies are present.
+  \item Verify Node.js version: \code{node --version} must be 18 or later.
+\end{enumerate}
+
+\subsection{Live Mode Fails with "Permission Denied"}
+
+\textbf{Symptom:} \code{Operation not permitted} when starting live mode.
+
+\textbf{Cause:} Raw packet capture requires root privileges.
+
+\textbf{Fix:}
+\begin{codebox}[bash]
+sudo npm run dev -- -i en0
+\end{codebox}
+
+\subsection{pfSense API Returns 401 Unauthorized}
+
+\textbf{Symptom:} WAN switching fails; bridge logs show a 401 HTTP response.
+
+\textbf{Cause:} The API key is incorrect or not set.
+
+\textbf{Fix:}
+\begin{enumerate}
+  \item Verify the key in \code{wan\_toggle-v2.py} matches the value shown in pfSense under \textbf{System → API → Keys}.
+  \item Confirm the pfSense-pkg-API package is installed and the API is enabled.
+  \item Test the key directly from the command line:
+\end{enumerate}
+\begin{codebox}[bash]
+curl -k -H "x-api-key: YOUR_KEY" https://<pfsense-ip>/api/v2/status/system
+\end{codebox}
+
+\subsection{pfSense API Returns 403 Forbidden}
+
+\textbf{Symptom:} API key is accepted but all routing requests are rejected.
+
+\textbf{Cause:} The API key does not have write permission on routing resources.
+
+\textbf{Fix:} In pfSense under \textbf{System → API → Keys}, edit the key and grant write access to routing resources.
+
+\subsection{Gateway Group Name Not Found}
+
+\textbf{Symptom:} Bridge logs show \code{Gateway group 'WAN\_FAILOVER' not found} and list available group names.
+
+\textbf{Cause:} The \code{GATEWAY\_GROUP\_NAME} constant in \code{wan\_toggle-v2.py} does not match the name as configured in pfSense.
+
+\textbf{Fix:} Log in to pfSense, navigate to \textbf{System → Routing → Gateway Groups}, and copy the exact name — including capitalisation — into \code{wan\_toggle-v2.py}.
+
+\subsection{TUI Not Forwarding Events to the Backend}
+
+\textbf{Symptom:} TUI runs and shows the demo, but the business dashboard stays at baseline and never shows a switch event.
+
+\textbf{Cause:} \code{BACKEND\_INGEST\_URL} environment variable is not set.
+
+\textbf{Fix:}
+\begin{codebox}[bash]
+BACKEND_INGEST_URL=http://127.0.0.1:3002/api/ingest/event npm run dev -- --demo
+\end{codebox}
+
+\subsection{NFStream Fails to Install}
+
+\textbf{Symptom:} \code{pip install nfstream} fails with a C build or compiler error.
+
+\textbf{Cause:} NFStream requires a C build environment and is only fully supported on Linux.
+
+\textbf{Fix (Ubuntu / Debian):}
+\begin{codebox}[bash]
+sudo apt install build-essential libpcap-dev python3-dev
+pip install nfstream
+\end{codebox}
+
+\begin{notebox}
+On macOS, NFStream support is limited. Use demo mode on macOS instead of attempting live mode.
+\end{notebox}
+
+% =============================================================================
+\section{Limitations}
+% =============================================================================
+
+\subsection{Demo Mode vs.\ Live Mode}
+
+The demo scenario is scripted and fully deterministic. It does not reflect the variability of real-world network conditions. All metrics shown in demo mode are simulated values and are not measurements from actual network hardware.
+
+\subsection{macOS Support for Live Mode}
+
+NFStream (the deep packet inspection engine) has limited support on macOS due to OS-level restrictions on raw packet capture. Live mode is only fully supported on Linux. On macOS, use demo mode or run the TUI on a dedicated Linux host.
+
+\subsection{No Authentication Layer}
+
+The backend REST API and WebSocket server ship without any authentication mechanism. They are intended solely for use on a trusted local network. Any device that can reach port 3002 can read telemetry data or post ingest events.
+
+\subsection{Single Gateway Group}
+
+The WAN switching logic targets one gateway group (\code{WAN\_FAILOVER} by default). Multi-group or multi-WAN topologies involving more than two WANs require modifications to \code{wan\_toggle-v2.py}.
+
+\subsection{In-Memory State Only}
+
+The backend holds all runtime state in memory. Restarting the backend resets all telemetry history, event logs, and ingest state. There is no database or persistent storage layer.
+
+\subsection{Fixed Intent Mapping}
+
+Application classification is based on a static \code{intent\_mapping.yaml} configuration file. New applications or IP ranges not already covered must be added manually to this file to be correctly classified.
+
+\subsection{Throughput Measurement Accuracy}
+
+Passive throughput measurement (the default mode) reads OS-level byte counters from the selected network interface. This reflects all traffic on that interface, not just flows from monitored applications, and may not accurately represent the throughput of individual applications.
+
+\subsection{Browser Compatibility}
+
+The frontend dashboards are developed and tested primarily on Chrome. Other modern browsers (Firefox, Safari, Edge) are generally supported but have not been systematically tested against all dashboard features.
+
+\subsection{pfSense Version Compatibility}
+
+The pfSense REST API integration targets the pfSense-pkg-API v2 endpoint schema. This is a third-party package and may not be compatible with all pfSense versions or future releases. The integration has been tested against pfSense 2.7.
+
+\end{document}
